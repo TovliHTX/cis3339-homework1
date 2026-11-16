@@ -8,6 +8,7 @@ import { RouterLink, RouterView } from 'vue-router'
 
     <nav aria-label="Main navigation">
       <RouterLink to="/students">Students</RouterLink>
+      <RouterLink to="/courses">Courses</RouterLink>
     </nav>
   </header>
 
@@ -15,3 +16,17 @@ import { RouterLink, RouterView } from 'vue-router'
     <RouterView />
   </main>
 </template>
+
+<style scoped>
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+nav a.router-link-active {
+  font-weight: bold;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 4px;
+}
+</style>
