@@ -1,35 +1,109 @@
-@import './base.css';
+* {
+  box-sizing: border-box;
+}
 
-#app {
-  max-width: 1280px;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #172536;
+  background: #f3f6fa;
+  line-height: 1.5;
+}
+
+.site-header {
+  padding: 1rem max(1rem, calc((100% - 1100px) / 2));
+  background: #193c60;
+  color: white;
+}
+
+nav {
+  margin-top: 0.75rem;
+}
+
+nav a {
+  color: white;
+}
+
+main {
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+  padding: 1rem;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+.panels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+.panel {
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  background: white;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
+h2 {
+  margin-top: 0;
+}
 
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
+form {
+  display: grid;
+  gap: 0.5rem;
+}
+
+input,
+button {
+  min-height: 44px;
+  padding: 0.65rem;
+  font: inherit;
+}
+
+input {
+  width: 100%;
+  border: 1px solid #65758a;
+  border-radius: 0.25rem;
+}
+
+button {
+  margin-top: 0.5rem;
+  border: 0;
+  border-radius: 0.25rem;
+  background: #205b93;
+  color: white;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+button.danger {
+  background: #a52323;
+}
+
+:focus-visible {
+  outline: 3px solid #b36a00;
+  outline-offset: 3px;
+}
+
+.error {
+  color: #a01919;
+}
+
+dt {
+  font-weight: bold;
+}
+
+dd {
+  margin-left: 0;
+  margin-bottom: 0.5rem;
+}
+
+@media (max-width: 650px) {
+  .panels {
+    grid-template-columns: 1fr;
   }
 }
