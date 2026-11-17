@@ -1,4 +1,6 @@
 <script setup>
+import StudentList from '@/components/StudentList.vue'
+import AppFeedback from '@/components/AppFeedback.vue'
 import { computed, onMounted, ref } from 'vue'
 import { useStudentsStore } from '@/stores/students'
 import { useCoursesStore } from '@/stores/courses'
@@ -84,10 +86,12 @@ onMounted(async () => {
   <section aria-labelledby="enrollments-heading">
     <h1 id="enrollments-heading">Enrollment management</h1>
 
-    <p v-if="loading" role="status">Loading students and courses…</p>
-    <p v-if="busy" role="status">Please wait…</p>
-    <p v-if="success" role="status">{{ success }}</p>
-    <p v-if="error" role="alert" class="error">{{ error }}</p>
+    <AppFeedback
+      :success="success"
+      :error="error"
+      :loading="loading || busy"
+      :loading-message="loading ? 'Loading students and courses…' : 'Please wait…'"
+    />
 
     <div class="panels">
       <section class="panel" aria-labelledby="enroll-heading">
@@ -175,14 +179,7 @@ onMounted(async () => {
             No students are enrolled in this course.
           </p>
 
-          <ul v-else>
-            <li
-              v-for="student in enrollmentsStore.roster"
-              :key="student._id"
-            >
-              {{ student.name }} — {{ student.id }}
-            </li>
-          </ul>
+          <StudentList v-else :students="enrollmentsStore.roster" />
         </div>
 
         <p v-else>Select a course and choose View roster.</p>

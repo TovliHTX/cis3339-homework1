@@ -1,4 +1,5 @@
 <script setup>
+import AppFeedback from '@/components/AppFeedback.vue'
 import { onMounted, reactive, ref } from 'vue'
 import { useCoursesStore } from '@/stores/courses'
 
@@ -60,8 +61,7 @@ onMounted(async () => {
   <section aria-labelledby="courses-heading">
     <h1 id="courses-heading">Course management</h1>
 
-    <p v-if="success" role="status">{{ success }}</p>
-    <p v-if="error" role="alert" class="error">{{ error }}</p>
+    <AppFeedback :success="success" :error="error" />
 
     <section class="panel" aria-labelledby="add-course-heading">
       <h2 id="add-course-heading">Add a course</h2>

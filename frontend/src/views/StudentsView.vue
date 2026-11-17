@@ -1,4 +1,6 @@
 <script setup>
+import StudentList from '@/components/StudentList.vue'
+import AppFeedback from '@/components/AppFeedback.vue'
 import { onMounted, reactive, ref } from 'vue'
 import { useStudentsStore } from '@/stores/students'
 
@@ -76,8 +78,7 @@ onMounted(async () => {
   <section aria-labelledby="students-heading">
     <h1 id="students-heading">Student management</h1>
 
-    <p v-if="success" role="status">{{ success }}</p>
-    <p v-if="error" role="alert" class="error">{{ error }}</p>
+    <AppFeedback :success="success" :error="error" />
 
     <div class="panels">
       <section class="panel" aria-labelledby="add-heading">
@@ -149,11 +150,7 @@ onMounted(async () => {
       <p v-if="loading" role="status">Loading students…</p>
       <p v-else-if="store.students.length === 0">No students have been added.</p>
 
-      <ul v-else>
-        <li v-for="student in store.students" :key="student._id">
-          {{ student.name }} — {{ student.id }}
-        </li>
-      </ul>
+      <StudentList v-else :students="store.students" />
     </section>
   </section>
 </template>
