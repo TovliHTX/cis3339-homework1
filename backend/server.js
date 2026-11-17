@@ -35,7 +35,7 @@ function isValidRecordId(value) {
 
 // ---------- Student routes ----------
 
-app.post('/find-student', async (req, res) => {
+app.post('/api/find-student', async (req, res) => {
   const { name } = req.body ?? {};
 
   if (typeof name !== 'string' || !name.trim()) {
@@ -55,12 +55,12 @@ app.post('/find-student', async (req, res) => {
   res.json(student);
 });
 
-app.get('/students', async (req, res) => {
+app.get('/api/students', async (req, res) => {
   const students = await Student.find().sort({ name: 1, id: 1 });
   res.json(students);
 });
 
-app.post('/add-student', async (req, res) => {
+app.post('/api/add-student', async (req, res) => {
   const { name, id, phone, zip } = req.body ?? {};
   const fields = { name, id, phone, zip };
 
@@ -88,7 +88,7 @@ app.post('/add-student', async (req, res) => {
 });
 
 // Delete by MongoDB _id, so students with the same name remain distinct.
-app.delete('/students/:id', async (req, res) => {
+app.delete('/api/students/:id', async (req, res) => {
   if (!isValidRecordId(req.params.id)) {
     return res.status(400).json({
       error: 'Invalid student record ID',
@@ -117,12 +117,12 @@ app.delete('/students/:id', async (req, res) => {
 
 // ---------- Course routes ----------
 
-app.get('/courses', async (req, res) => {
+app.get('/api/courses', async (req, res) => {
   const courses = await Course.find().sort({ id: 1 });
   res.json(courses);
 });
 
-app.post('/courses', async (req, res) => {
+app.post('/api/courses', async (req, res) => {
   const { id, name } = req.body ?? {};
 
   if (
@@ -147,7 +147,7 @@ app.post('/courses', async (req, res) => {
   });
 });
 
-app.delete('/courses/:id', async (req, res) => {
+app.delete('/api/courses/:id', async (req, res) => {
   if (!isValidRecordId(req.params.id)) {
     return res.status(400).json({
       error: 'Invalid course record ID',
@@ -175,7 +175,7 @@ app.delete('/courses/:id', async (req, res) => {
 
 // ---------- Enrollment routes ----------
 
-app.post('/enrollments', async (req, res) => {
+app.post('/api/enrollments', async (req, res) => {
   const { studentId, courseId } = req.body ?? {};
 
   if (!isValidRecordId(studentId) || !isValidRecordId(courseId)) {
@@ -209,7 +209,7 @@ app.post('/enrollments', async (req, res) => {
 });
 
 // Return the students enrolled in the selected course.
-app.get('/courses/:id/students', async (req, res) => {
+app.get('/api/courses/:id/students', async (req, res) => {
   if (!isValidRecordId(req.params.id)) {
     return res.status(400).json({
       error: 'Invalid course record ID',
@@ -234,6 +234,21 @@ app.get('/courses/:id/students', async (req, res) => {
     .sort((a, b) => a.name.localeCompare(b.name));
 
   res.json(students);
+});
+
+// ---------- Production frontend ----------
+
+app.use('/api', (req, res) => {
+  res.status(404).json({ error: 'Endpoint not found' });
+});
+
+const frontendDist = path.join(__dirname, '../frontend/dist');
+app.use(express.static(frontendDist));
+
+app.get(['/', '/students', '/courses', '/enrollments'], (req, res, next) => {
+  res.sendFile(path.join(frontendDist, 'index.html'), (error) => {
+    if (error) next(error);
+  });
 });
 
 // ---------- Error handling ----------
