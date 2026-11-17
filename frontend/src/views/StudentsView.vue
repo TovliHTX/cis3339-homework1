@@ -54,7 +54,7 @@ async function deleteStudent() {
   if (!window.confirm(`Delete ${result.value.name}?`)) return
 
   await perform(async () => {
-    await store.deleteStudent(result.value.name)
+    await store.deleteStudent(result.value._id)
     result.value = null
     searched.value = false
     success.value = 'Student deleted successfully.'

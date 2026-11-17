@@ -45,13 +45,12 @@ export const useStudentsStore = defineStore('students', () => {
     })
   }
 
-  async function deleteStudent(name) {
-    await request('/delete-student', {
-      method: 'POST',
-      body: JSON.stringify({ name }),
-    })
+  async function deleteStudent(recordId) {
+    await request(`/students/${encodeURIComponent(recordId)}`, {
+      method: 'DELETE',
+    });
 
-    await loadStudents()
+    await loadStudents();
   }
 
   return {
